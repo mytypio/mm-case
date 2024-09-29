@@ -27,7 +27,8 @@ class MixPanelAdapter implements UserStorageInterface
     public function __construct()
     {
         $this->mixpanel = new Mixpanel(
-            config('mixpanel.token')
+            config('mixpanel.token'),
+            config('mixpanel.url')
         );
     }
 

@@ -17,13 +17,15 @@ class Mixpanel
      * Mixpanel constructor.
      *
      * @param string $apiToken The API token for Mixpanel.
+     * @param string $apiUrl   The API URL for Mixpanel.
      */
     public function __construct(
         private readonly string $apiToken,
+        private readonly string $apiUrl
     ) {
         $this->client = new Client(
             [
-                'base_uri' => 'https://api-eu.mixpanel.com',
+                'base_uri' => $this->apiUrl,
             ]
         );
     }

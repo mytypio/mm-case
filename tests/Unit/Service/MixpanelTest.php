@@ -19,7 +19,7 @@ class MixpanelTest extends TestCase
     protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
-        $this->mixpanel = new Mixpanel('test_api_token');
+        $this->mixpanel = new Mixpanel('test_api_token', 'test_api_url');
         $this->mixpanel->client = $this->client;
     }
 
