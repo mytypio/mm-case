@@ -3,6 +3,7 @@
 
 This demo project is created for Meditation Moments. it contains a User management application with a API intergration of Mixpanel.
 
+![App Screenshot](https://raw.githubusercontent.com/mytypio/mm-case/refs/heads/master/resources/screenshots/screenshot-homepage.png)
 
 ## Requirements
 
@@ -128,6 +129,3 @@ To run PHPUnit tests with coverage you need to install PCOV or xDebug.
 
 A pre-generated coverage report is also availible in the ./reports/ folder.
 
-## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
