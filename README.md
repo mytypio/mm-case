@@ -1,131 +1,135 @@
+# Meditation Moments - Demo Project
 
-# Meditation Moments - Case
-
-This demo project is created for Meditation Moments. it contains a User management application with a API intergration of Mixpanel.
+This is a demo project created for **Meditation Moments**. It features a user management application with Mixpanel API integration for tracking user activities and events.
 
 ![App Screenshot](https://raw.githubusercontent.com/mytypio/mm-case/refs/heads/master/resources/screenshots/screenshot-homepage.png)
 
 ## Requirements
 
-This project requires PHP8.1 or later to run. To run PHPUnit tests with code-coverage raports you need PCOV or xDebug to be installed on the local system.
+- **PHP**: Version 8.1 or later.
+- **PHPUnit**: For running tests with code coverage reports, PCOV or xDebug needs to be installed locally.
 
 ## Installation
 
-To get started with this demo project you have to run a few commands as described in this file.
+To get started with the demo project, follow these steps:
 
+### 1. Install Packages
 
-**Install packages**
-
-First install all the packages by running composer install.
+Run the following command to install the required packages:
 
 ```bash 
 composer install
 ```
 
-**Setup database**
+### 2. Set Up the Database
 
-To setup the database for this project, you can run the following command:
-
-```bash
-  php artisan migrate
-```
-
-This command will create a database with tables that are needed for this project to run.
-
-**Seed database**
-
-Next up, we can load some dummy data into the database to get started:
+Run the migration command to create the necessary database tables:
 
 ```bash
-  php db:seed
+php artisan migrate
 ```
 
-This command will generate 10 random users with a role ROLE_USER. These users can login and edit their profile. Next to that a user will be generated with the role ROLE_ADMIN, this user is able to manage the registered users.
+### 3. Seed the Database
 
-
-**Run local server**
-
-Then you can run the following command to setup a server:
+Load sample data into the database to populate it with test users:
 
 ```bash
-  php artisan serve
+php artisan db:seed
 ```
 
-The demo will be availible on http://127.0.0.1:8000
+This will generate:
+- 10 random users with the `ROLE_USER`.
+- 1 admin user with the `ROLE_ADMIN` who has access to manage registered users.
 
-**Start worker**
+### 4. Run Local Server
 
-To process async events you need to run the following command.
+Start a local development server:
 
 ```bash
-  php artisan queue:work
+php artisan serve
 ```
+
+The application will be available at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+### 5. Start Queue Worker
+
+To process asynchronous events, run the following command:
+
+```bash
+php artisan queue:work
+```
+
 ## Environment Variables
 
-To run this project, you will need to add or modify the following environment variables to your .env file or just copy the .env.example
+You need to configure the following environment variables in your `.env` file (or copy and edit the `.env.example` file):
 
-`DB_CONNECTION=sqlite`
+```bash
+DB_CONNECTION=sqlite
+DB_DATABASE=/your/local/path/database/db.sqlite
+DB_FOREIGN_KEYS=true
+MIXPANEL_URL="https://the_url_to_mixpanel"
+MIXPANEL_TOKEN="your_mixpanel_token"
+QUEUE_CONNECTION=database
+```
 
-`DB_DATABASE=/your/local/path/database/db.sqlite`
+## User Interface
 
-`DB_FOREIGN_KEYS=true`
+The user interface is built using **Blade** and **TailwindCSS**, maintaining a clean, responsive design that works across all devices. Most components are sourced from **TailwindUI** to streamline development, and no custom CSS is used.
 
-`MIXPANEL_URL="https://the_url_to_mixpanel"`
+## Key Features
 
-`MIXPANEL_TOKEN="you_mixpanel_token"`
+This demo application provides fundamental functionalities for user management, including user registration, profile updates, and account deletion.
 
-`QUEUE_CONNECTION=database`
-## Functionalities
-This demo application has some basic functionalities regarding registering and updating a User model. Trough some basic forms a user can register, login and update their profile.
+### 1. Creating a New User
 
-### Creating a new User
-A new user can be created by filling in a registration form. The only fields that are required are a firstname, lastname, emailaddress and password. The user is automaticlly logged in when completing the registration.
+A new user can be registered by filling out a simple form. The following fields are required:
 
-A couple of fields are required and are validated:
+| Field         | Validation Rules                                        |
+| ------------- | ------------------------------------------------------- |
+| First Name    | `'required', 'string', 'max:255'`                       |
+| Last Name     | `'required', 'string', 'max:255'`                       |
+| Email Address | `'required', 'string', 'max:255', 'email', 'unique'`    |
+| Password      | Required field with standard password validation        |
 
-| Field  | Validation |
-| ------------- | ------------- |
-| FirstName  | ```'required', 'string', 'max:255'```  |
-| LastName  | ```'required', 'string', 'max:255'```  |
-| EmailAddress  | ```'required', 'string', 'max:255', 'lowercase', 'email', 'unique'```  |
+Upon successful registration, the user is automatically logged in. Additionally, fields like `status`, `userStorageType`, `lastSyncedAt`, and `role` are automatically populated.
 
-Other fields that are required but automaticlly filled for creating a new user are: ```status```, ```userStorageType```, ```lastSyncedAt``` and ```role```.
+### 2. Updating a User
 
-### Updating a User
-When a user is logged in, they are able to edit their profile. They can change their firstname, lastname and emailaddress.
+Logged-in users can edit their profiles to update their first name, last name, and email address. They can also reset their password if needed.
 
-There is also a posibility for a user to reset their password.
+### 3. Deleting a User
 
-### Deleting a User
-When a User is logged in, they are also able to delete their own account. This account will be soft deleted, that means the status of a user will be set at inactive and the field deleted_at is set to the current timestamp. This way data will be accessible for analyses.
+Users can delete their own account. This action soft-deletes the account, setting the status to "inactive" and timestamping the `deleted_at` field, making the data available for analysis without permanent deletion.
 
-### User management
+### 4. User Management (Admin)
 
-A User with ROLE_ADMIN will be redirected to the user management dashboard. This dashboard gives the User the posibility to manage all registered Users.
+Users with the `ROLE_ADMIN` will be redirected to a user management dashboard, where they can view, edit, and delete any registered users. All actions are synchronized with Mixpanel for tracking purposes.
 
-Users can be edited or removed. All these actions are also synced with Mixpanel.
-## Data syncronisation
-This application supports data synchronization with external parties. Using the ```UserStorageAdapterFactory```, a storage adapter can be linked to a user. When a new adapter is added to the factory, integrating an additional external party becomes seamless. The new adapter must be compatible with the ```UserStorageInterface```, ensuring that all functions and events can be integrated with the new party without modifying the core system.
+## Data Synchronization
 
-### Mixpanel Integration
+The application supports data synchronization with external systems. Using the `UserStorageAdapterFactory`, different storage adapters can be linked to users, facilitating seamless integration with multiple external parties. The adapter must be compatible with the `UserStorageInterface`, ensuring smooth functionality without modifying the core system.
 
-User activities and events are seamlessly synced and logged through the Mixpanel API. For example, when a user updates or deletes their account, these actions are promptly reflected in Mixpanel.
+## Mixpanel Integration
 
-To ensure optimal performance, events triggered within the application are processed using a database queue. This prevents any slowdown or downtime for the user, as events are queued and executed in the background.
+All user activities and events are logged and synced with Mixpanel via its API. For example, when users update or delete their accounts, these actions are reflected in Mixpanel in real-time.
 
-The communication with Mixpanel is based on a "Project Token" provided by Mixepanel. This token is related to the Mixepanel project.
-
+To optimize performance, events are processed in the background using a queue system, ensuring no downtime or slowdowns for the user. Mixpanel integration relies on a project-specific token for communication.
 
 ## Running Tests
 
-To run tests, run the following command
+To run the test suite, execute:
 
 ```bash
-  ./vendor/bin/phpunit
+./vendor/bin/phpunit
 ```
 
-To run PHPUnit tests with coverage you need to install PCOV or xDebug.
-(see: https://github.com/krakjoe/pcov/blob/develop/INSTALL.md)
+For code coverage reports, ensure PCOV or xDebug is installed. You can follow the [PCOV installation guide](https://github.com/krakjoe/pcov/blob/develop/INSTALL.md) for assistance.
 
-A pre-generated coverage report is also availible in the ./tests/Report/ folder.
+A pre-generated coverage report is also available in the `./tests/Report/` folder.
 
+### Code Coverage Summary:
+
+- **Classes**: 84.00% (21/25)
+- **Methods**: 89.61% (69/77)
+- **Lines**: 96.43% (405/420)
+```

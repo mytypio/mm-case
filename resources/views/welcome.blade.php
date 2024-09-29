@@ -38,7 +38,7 @@
                             PHPUnit tests: 61 (93 assertions)
                         </span>
                         <span class="ml-2 inline-flex items-center space-x-2 text-sm font-medium leading-6 text-gray-300">
-                            <span>Code coverage: 98.01%</span>
+                            <span>Code coverage: 96.43%</span>
                             <span class="rounded-full bg-green-500 w-3 h-3"></span>
                         </span>
                 </div>
