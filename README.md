@@ -127,5 +127,5 @@ To run tests, run the following command
 To run PHPUnit tests with coverage you need to install PCOV or xDebug.
 (see: https://github.com/krakjoe/pcov/blob/develop/INSTALL.md)
 
-A pre-generated coverage report is also availible in the ./reports/ folder.
+A pre-generated coverage report is also availible in the ./tests/Report/ folder.
 
