@@ -23,6 +23,12 @@ composer install
 
 ### 2. Set Up the Database
 
+Create a new file called db.sqlite in ./database. 
+```bash
+touch database/db.sqlite
+```
+
+
 Run the migration command to create the necessary database tables:
 
 ```bash
